@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { CrowToken, TokenList } from "../../../contexts/TokensContext"
 
 interface CoinPriceProps {
@@ -7,6 +8,12 @@ interface CoinPriceProps {
 
 export function CoinPrice({ crow, tokens }: CoinPriceProps) {
     // console.log({ crow, tokens })
+    const [qtdToken, setQtdToken] = useState<number>(1)
+
+    const priceCrow = crow && crow.price * qtdToken
+    const priceToken = tokens && tokens.daySummary.close * qtdToken
+    const priceTokenUSD = tokens && tokens.daySummary.closeDollar * qtdToken
+
     return (
         <div className="flex items-center justify-between w-full lg:w-[365px] bg-zinc-900 border-zinc-800 border rounded-sm px-10 py-5 gap-5">
             <div className="flex items-center flex-col gap-2">
@@ -22,33 +29,44 @@ export function CoinPrice({ crow, tokens }: CoinPriceProps) {
             </div>
 
             {/* GAMBIARRA DO CARAIO */}
-            <div className="flex flex-col items-center justify-center">
-                <p className="flex text-2xl gap-1">
-                    {crow ? '' : <img src="https://cache.wemixplay.com/ADMIN-CONSOLE/TOKEN/CROW/5b1653cc-d2b1-4d57-a03c-4a73e83dbb46-crow.png" alt="CROW" width="30" height="30" />}
-                    
-                    {
-                        crow?.price.toLocaleString('en', {
-                            style: 'currency',
-                            currency: 'USD',
-                            minimumFractionDigits: 4,
-                        }) 
-                    || 
-                        tokens?.daySummary.close.toLocaleString('en', {
-                            minimumFractionDigits: 4,
-                        })
-                    }
+            <div className="flex flex-col items-center justify-center gap-3">
+                <div className="flex items-center flex-col">
+                    <p className="flex text-2xl gap-1">
+                        {crow ? '' : <img src="https://cache.wemixplay.com/ADMIN-CONSOLE/TOKEN/CROW/5b1653cc-d2b1-4d57-a03c-4a73e83dbb46-crow.png" alt="CROW" width="30" height="30" />}
+                        
+                        {
+                            priceCrow?.toLocaleString('en', {
+                                style: 'currency',
+                                currency: 'USD',
+                                minimumFractionDigits: 4,
+                            }) 
+                        || 
+                            priceToken?.toLocaleString('en', {
+                                minimumFractionDigits: 4,
+                            })
+                        }
 
-                </p>
-                <span className="text-xl text-zinc-400">
-                    {
-                        !!crow 
-                    || 
-                        tokens?.daySummary.closeDollar.toLocaleString('en', {
-                            style: 'currency',
-                            currency: 'USD',
-                        })            
-                    }
-                </span>
+                    </p>
+                    <span className="text-xl text-zinc-400">
+                        {
+                            !!crow 
+                        || 
+                            priceTokenUSD?.toLocaleString('en', {
+                                style: 'currency',
+                                currency: 'USD',
+                            })            
+                        }
+                    </span>
+                </div>
+                <div className="flex items-center border-b border-zinc-700">
+                    <p className="self-end">x</p>
+                    <input 
+                        type="text"
+                        value={qtdToken}
+                        onChange={(e) => setQtdToken(Number(e.target.value))}
+                        className="w-[100px] px-2 text-2xl text-white bg-transparent border-none focus-visible:outline-none"
+                    />
+                </div>
             </div>
         </div>
     )
