@@ -13,6 +13,7 @@ export function CoinPrice({ crow, tokens }: CoinPriceProps) {
     const priceCrow = crow && crow.price * qtdToken
     const priceToken = tokens && tokens.daySummary.close * qtdToken
     const priceTokenUSD = tokens && tokens.daySummary.closeDollar * qtdToken
+    const priceDIMA = crow && qtdToken * 80
 
     return (
         <div className="flex items-center justify-between w-full lg:w-[365px] bg-zinc-900 border-zinc-800 border rounded-sm px-10 py-5 gap-5">
@@ -32,6 +33,7 @@ export function CoinPrice({ crow, tokens }: CoinPriceProps) {
             <div className="flex flex-col items-center justify-center gap-3">
                 <div className="flex items-center flex-col">
                     <p className="flex text-2xl gap-1">
+
                         {crow ? '' : <img src="https://cache.wemixplay.com/ADMIN-CONSOLE/TOKEN/CROW/5b1653cc-d2b1-4d57-a03c-4a73e83dbb46-crow.png" alt="CROW" width="30" height="30" />}
                         
                         {
@@ -47,6 +49,14 @@ export function CoinPrice({ crow, tokens }: CoinPriceProps) {
                         }
 
                     </p>
+
+                    {crow && (
+                        <span className="flex items-center gap-1">
+                            <img src="https://gcdn.wemade.games/prod/ncgl/official/2.5.5/_next/static/images/token/diagram-vdia.webp" alt="DIAMOND" width="30" height="30" />
+                            <p className="text-xl text-zinc-400">{priceDIMA}</p>
+                        </span>
+                    )}
+                    
                     <span className="text-xl text-zinc-400">
                         {
                             !!crow 
